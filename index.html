@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>容器镜像加速服务</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+    
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden; /* 禁止水平滚动 */
+            font-family: 'Noto Sans', 'Noto Sans SC', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+    
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* 防止内容溢出容器 */
+        }
+        h1, h2, h3, p, table, th, td {
+            font-family: 'Noto Sans', 'Noto Sans SC', Arial, sans-serif;
+        }
+        h1, h2, h3  {
+            color: #007acc;
+        }
+
+        pre {
+            font-family: 'Courier New', monospace;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            max-width: 100%;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            color: #d6336c;
+        }
+    
+        ul {
+            padding-left: 20px;
+        }
+    
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+            word-break: break-word;
+        }
+    
+        .faq {
+            margin-top: 30px;
+        }
+    
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #888;
+        }
+    
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+        }
+    
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            table {
+                display: block;
+                overflow-x: auto; /* 仅在需要时滚动 */
+                white-space: nowrap; /*保持表格内容不换行 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 容器镜像加速服务</h1>
+        <p>为了帮助中国大陆用户更快速地访问容器镜像仓库，我们提供了 <b>镜像加速服务</b>。通过我们的服务，您可以大幅提升从 Docker Hub、GCR、Quay.io、GitHub Container Registry 等仓库拉取镜像的速度。</p>
+        
+        <h2>🌐 支持的镜像仓库</h2>
+        <p>我们支持以下镜像仓库的加速服务：</p>
+        <table style="width:100%; border-collapse: collapse; margin-top: 20px;">
+            <tr>
+                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f0f0f0;">源站</th>
+                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f0f0f0;">镜像地址</th>
+                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f0f0f0;">平台</th>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">docker.io</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">hub.mirrorify.net</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Docker Hub</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">gcr.io</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">gcr.mirrorify.net</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Google Container Registry</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">ghcr.io</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">ghcr.mirrorify.net</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">GitHub Container Registry</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">k8s.gcr.io</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">k8s-gcr.mirrorify.net</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Kubernetes Container Registry</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">registry.k8s.io</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">k8s.mirrorify.net</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Kubernetes Container Registry</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">quay.io</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">quay.mirrorify.net</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Quay Container Registry</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">mcr.microsoft.com</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">mcr.mirrorify.net</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Microsoft Container Registry</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">docker.elastic.co</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">elastic.mirrorify.net</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">Elastic Stack</td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;">nvcr.io</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">nvcr.mirrorify.net</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">NVIDIA Container Registry</td>
+            </tr>
+        </table>
+        <h2>📖 使用方法</h2>
+        <h3>1. 配置 Docker 加速器</h3>
+        <p><b>方法一：修改 Docker 配置文件</b></p>
+        <pre><code>{
+  "registry-mirrors": ["https://hub.mirrorify.net"]
+}</code></pre>
+        <p>重启 Docker：</p>
+        <pre><code>sudo systemctl daemon-reload
+sudo systemctl restart docker</code></pre>
+
+        <h3>2. 使用镜像加速拉取镜像</h3>
+        <pre><code>docker pull my-image:latest
+docker pull gcr.mirrorify.net/google-containers/busybox</code></pre>
+
+        <h2>📋 使用示例</h2>
+        <h3>Docker Compose 示例</h3>
+        <pre><code>services:
+  app:
+    image: hub.mirrorify.net/my-image:latest
+    ports:
+      - "8080:8080"</code></pre>
+
+        <h3>Kubernetes YAML 示例</h3>
+        <pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+      - name: my-container
+        image: hub.mirrorify.net/my-image:latest</code></pre>
+
+        <div class="notice">
+            <h2>⚠️ 注意事项</h2>
+            <h3>1. 本站仅为中国大陆用户提供服务</h3>
+            <p>其他地区用户无法使用。</p>
+            
+            <h3>2. 本站为公益性服务，无SLA保障</h3>
+            <p>本站提供的镜像加速服务为公益性质，不提供服务级别协议 (SLA) 保障。在使用过程中，可能会遇到服务中断或速度不稳定的情况，敬请谅解。</p>
+            
+            <h3>3. 私有仓库无法加速</h3>
+            <p>本站的镜像加速服务仅支持公共容器镜像仓库，暂不支持加速私有仓库镜像的拉取。如果需要访问私有仓库，请配置私有镜像服务。</p>
+        </div>
+        
+        
+
+        <h2>💬 联系我们</h2>
+        <p>如有任何问题建议或想加入我们，欢迎联系我们：</p>
+        <ul>
+            <li>📧 邮箱：contact@mirrorify.net</li>
+        </ul>
+        
+        <div class="donate-section">
+            <h2>💖 捐赠支持</h2>
+            <p>为了持续提供稳定的镜像加速服务，我们欢迎您的支持和捐赠：</p>
+            <ul>
+                <li>🪙 EVM: 0xf42ec745df7789731c4a9DCB739E1Ee8C5E36988</li>
+                <li>🪙 Solana: 2EZG4oMaCYB6y9WDPVPiZPzJ8DbriB9N3p3KonkmT2hw</li>
+                <li>🪙 TON: UQAzuLFESF_pM19npVOCGdZ9e5rcZokVNUgN80EPu4AE_khB</li>
+                <li>🪙 Sui: 0x4a6d7310fb0eb1e7c6841122bd4622aa49d86547af820df6b0da8ffc52a3ccd5</li>
+                <li>🪙 Aptos: 0xade0f501bc7438cb03cfb58d88897b5eb8531837797c10d86125f922e2f492ce</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>Copyright © 2025 Mirrorify.net All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

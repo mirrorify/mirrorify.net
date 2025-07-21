@@ -6,9 +6,7 @@
   <title>容器镜像服务</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
@@ -53,9 +51,7 @@
       color: #007acc;
     }
 
-    p {
-      line-height: 1.6;
-    }
+    p { line-height: 1.6; }
 
     pre {
       background: #f4f7fa;
@@ -112,9 +108,7 @@
       border: 1px solid #ddd;
     }
 
-    ul {
-      padding-left: 20px;
-    }
+    ul { padding-left: 20px; }
 
     .notice {
       background-color: #fff8e1;
@@ -205,14 +199,30 @@
       background-color: #1a8cbe;
     }
 
-    @media (max-width: 768px) {
-      .container {
-        padding: 20px;
-      }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #777;
+    }
 
-      h1 {
-        font-size: 1.5rem;
-      }
+    .copy-toast {
+      position: fixed;
+      background-color: #323232;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+      right: 24px;
+      bottom: 24px;
+    }
+
+    .copy-toast.show {
+      opacity: 1;
     }
 
     @media (max-width: 600px) {
@@ -230,13 +240,14 @@
         width: 100%;
         text-align: center;
       }
-    }
 
-    .footer {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 14px;
-      color: #777;
+      .copy-toast {
+        right: 50%;
+        transform: translateX(50%);
+        bottom: 20px;
+        max-width: 90%;
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -303,12 +314,7 @@ spec:
 
     <div class="notice">
       <h2>⚠️ 注意事项</h2>
-      <h3>1. 本站仅限中国大陆用户使用</h3>
-      <p>其他地区用户无法使用。</p>
-      <h3>2. 本站为公益性服务</h3>
-      <p>无 SLA 保证，服务可能中断或波动。</p>
-      <h3>3. 不支持私有仓库</h3>
-      <p>如需使用私有仓库请配置自己的 registry。</p>
+      <p>本站仅限中国大陆用户使用，服务为公益性，不支持私有仓库镜像。</p>
     </div>
 
     <h2>💬 联系我们</h2>
@@ -326,35 +332,36 @@ spec:
 
     <div class="donate-section">
       <h2>💖 捐赠支持</h2>
-      <p>为了持续提供稳定的镜像加速服务，我们欢迎您的支持：</p>
+      <p>我们欢迎您的支持：</p>
+
       <div class="donate-card"><h3>🪙 EVM</h3>
         <div class="address-row">
           <code id="evm">0xf42ec745df7789731c4a9DCB739E1Ee8C5E36988</code>
-          <button onclick="copyToClipboard('evm')">复制</button>
+          <button data-copy-target="evm">复制</button>
         </div>
       </div>
       <div class="donate-card"><h3>🪙 Solana</h3>
         <div class="address-row">
           <code id="solana">2EZG4oMaCYB6y9WDPVPiZPzJ8DbriB9N3p3KonkmT2hw</code>
-          <button onclick="copyToClipboard('solana')">复制</button>
+          <button data-copy-target="solana">复制</button>
         </div>
       </div>
       <div class="donate-card"><h3>🪙 TON</h3>
         <div class="address-row">
           <code id="ton">UQAzuLFESF_pM19npVOCGdZ9e5rcZokVNUgN80EPu4AE_khB</code>
-          <button onclick="copyToClipboard('ton')">复制</button>
+          <button data-copy-target="ton">复制</button>
         </div>
       </div>
       <div class="donate-card"><h3>🪙 Sui</h3>
         <div class="address-row">
           <code id="sui">0x4a6d7310fb0eb1e7c6841122bd4622aa49d86547af820df6b0da8ffc52a3ccd5</code>
-          <button onclick="copyToClipboard('sui')">复制</button>
+          <button data-copy-target="sui">复制</button>
         </div>
       </div>
       <div class="donate-card"><h3>🪙 Aptos</h3>
         <div class="address-row">
           <code id="aptos">0xade0f501bc7438cb03cfb58d88897b5eb8531837797c10d86125f922e2f492ce</code>
-          <button onclick="copyToClipboard('aptos')">复制</button>
+          <button data-copy-target="aptos">复制</button>
         </div>
       </div>
     </div>
@@ -364,12 +371,16 @@ spec:
     </div>
   </div>
 
+  <div id="copy-toast" class="copy-toast">✅ 已复制到剪贴板</div>
+
   <script>
-    function copyToClipboard(id) {
-      const text = document.getElementById(id).innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        alert("地址已复制到剪贴板！");
-      });
+    function showToast(message = "✅ 已复制到剪贴板") {
+      const toast = document.getElementById("copy-toast");
+      toast.innerText = message;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2000);
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -381,10 +392,23 @@ spec:
         button.addEventListener("click", () => {
           navigator.clipboard.writeText(block.innerText).then(() => {
             button.innerText = "✅ 已复制";
+            showToast();
             setTimeout(() => button.innerText = "复制", 1500);
           });
         });
         wrapper.appendChild(button);
+      });
+
+      document.querySelectorAll("[data-copy-target]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const targetId = btn.getAttribute("data-copy-target");
+          const content = document.getElementById(targetId)?.innerText || "";
+          navigator.clipboard.writeText(content).then(() => {
+            btn.innerText = "✅ 已复制";
+            showToast();
+            setTimeout(() => btn.innerText = "复制", 1500);
+          });
+        });
       });
     });
   </script>

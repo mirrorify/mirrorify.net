@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>容器镜像服务</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans', 'Noto Sans SC', Arial, sans-serif;
+      background: linear-gradient(to bottom, #f7fafe, #e4ecf5);
+      color: #333;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 30px 15px;
+    }
+
+    .container {
+      background: #fff;
+      max-width: 900px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+    }
+
+    h1, h2, h3 {
+      color: #005fa3;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      border-left: 6px solid #00aaff;
+      padding-left: 12px;
+      margin-bottom: 20px;
+    }
+
+    h2::before, h3::before {
+      content: "📌";
+      margin-right: 8px;
+      color: #007acc;
+    }
+
+    p { line-height: 1.6; }
+
+    pre {
+      background: #f4f7fa;
+      border-left: 4px solid #007acc;
+      padding: 15px;
+      font-size: 14px;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+
+    code {
+      font-family: 'Courier New', monospace;
+      color: #c7254e;
+    }
+
+    .code-wrapper {
+      position: relative;
+      margin-top: 16px;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 5px 10px;
+      font-size: 12px;
+      background-color: #00aaff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      opacity: 0.9;
+    }
+
+    .copy-btn:hover {
+      background-color: #008ecc;
+      opacity: 1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th {
+      background-color: #007acc;
+      color: #fff;
+      padding: 12px;
+    }
+
+    td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+
+    ul { padding-left: 20px; }
+
+    .notice {
+      background-color: #fff8e1;
+      border-left: 5px solid #ff9800;
+      padding: 20px;
+      border-radius: 6px;
+      margin-top: 30px;
+    }
+
+    .donate-section {
+      margin-top: 40px;
+      background-color: #f0faff;
+      border-left: 5px solid #00aaff;
+      padding: 25px;
+      border-radius: 10px;
+    }
+
+    .donate-card {
+      background-color: #ffffff;
+      border: 1px solid #cce6ff;
+      border-radius: 8px;
+      padding: 15px 20px;
+      margin-top: 15px;
+      box-shadow: 0 2px 6px rgba(0, 100, 200, 0.1);
+    }
+
+    .address-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .address-row code {
+      background-color: #f4f4f4;
+      padding: 6px 10px;
+      border-radius: 4px;
+      word-break: break-all;
+      flex: 1;
+      font-size: 14px;
+      color: #005fa3;
+    }
+
+    .address-row button {
+      background-color: #00aaff;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .address-row button:hover {
+      background-color: #008ecc;
+    }
+
+    .telegram-section {
+      margin-top: 40px;
+      background-color: #f0f9ff;
+      padding: 20px 25px;
+      border-radius: 10px;
+      border-left: 5px solid #229ed9;
+    }
+
+    .tg-buttons {
+      margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .tg-button {
+      display: inline-block;
+      padding: 10px 16px;
+      background-color: #229ed9;
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .tg-button:hover {
+      background-color: #1a8cbe;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #777;
+    }
+
+    .copy-toast {
+      position: fixed;
+      background-color: #323232;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+      right: 24px;
+      bottom: 24px;
+    }
+
+    .copy-toast.show {
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .tg-buttons {
+        flex-direction: column;
+      }
+
+      .tg-button {
+        width: 100%;
+        text-align: center;
+      }
+
+      .copy-toast {
+        right: 50%;
+        transform: translateX(50%);
+        bottom: 20px;
+        max-width: 90%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 容器镜像服务</h1>
+    <p>为了帮助中国大陆用户访问容器镜像仓库，我们提供了 <b>容器镜像服务</b></p>
+
+    <h2>🌐 支持的镜像仓库</h2>
+    <table>
+      <tr><th>源站</th><th>镜像地址</th><th>平台</th></tr>
+      <tr><td>docker.io</td><td>hub.mirrorify.net</td><td>Docker Hub</td></tr>
+      <tr><td>gcr.io</td><td>gcr.mirrorify.net</td><td>Google Container Registry</td></tr>
+      <tr><td>ghcr.io</td><td>ghcr.mirrorify.net</td><td>GitHub Container Registry</td></tr>
+      <tr><td>k8s.gcr.io</td><td>k8s-gcr.mirrorify.net</td><td>Kubernetes Registry</td></tr>
+      <tr><td>registry.k8s.io</td><td>k8s.mirrorify.net</td><td>Kubernetes Registry</td></tr>
+      <tr><td>quay.io</td><td>quay.mirrorify.net</td><td>Quay</td></tr>
+      <tr><td>mcr.microsoft.com</td><td>mcr.mirrorify.net</td><td>Microsoft</td></tr>
+      <tr><td>docker.elastic.co</td><td>elastic.mirrorify.net</td><td>Elastic Stack</td></tr>
+      <tr><td>nvcr.io</td><td>nvcr.mirrorify.net</td><td>NVIDIA</td></tr>
+    </table>
+
+    <h2>📖 使用方法</h2>
+    <h3>1. 配置 Docker 加速器</h3>
+    <div class="code-wrapper">
+      <pre><code>{
+  "registry-mirrors": ["https://hub.mirrorify.net"]
+}</code></pre>
+    </div>
+    <div class="code-wrapper">
+      <pre><code>sudo systemctl daemon-reload
+sudo systemctl restart docker</code></pre>
+    </div>
+
+    <h3>2. 使用镜像加速拉取镜像</h3>
+    <div class="code-wrapper">
+      <pre><code>docker pull gcr.mirrorify.net/google-containers/busybox</code></pre>
+    </div>
+
+    <h2>📋 使用示例</h2>
+    <h3>Docker Compose 示例</h3>
+    <div class="code-wrapper">
+      <pre><code>services:
+  app:
+    image: hub.mirrorify.net/my-image:latest
+    ports:
+      - "8080:8080"</code></pre>
+    </div>
+
+    <h3>Kubernetes YAML 示例</h3>
+    <div class="code-wrapper">
+      <pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+      - name: my-container
+        image: hub.mirrorify.net/my-image:latest</code></pre>
+    </div>
+
+    <div class="notice">
+      <h2>⚠️ 注意事项</h2>
+      <p>本站仅限中国大陆用户使用，服务为公益性，不支持私有仓库镜像。</p>
+    </div>
+
+    <h2>💬 联系我们</h2>
+    <ul>
+      <li>📧 邮箱：contact@mirrorify.net</li>
+    </ul>
+
+    <div class="telegram-section">
+      <h2>📢 加入我们社群</h2>
+      <p>欢迎加入 Mirrorify 社群，获取最新通知、讨论与支持：</p>
+      <div class="tg-buttons">
+        <a class="tg-button" href="https://t.me/Mirrorify" target="_blank">📣 Telegram 频道</a>
+      </div>
+    </div>
+
+    <div class="donate-section">
+      <h2>💖 捐赠支持</h2>
+      <p>我们欢迎您的支持：</p>
+
+      <div class="donate-card"><h3>🪙 EVM</h3>
+        <div class="address-row">
+          <code id="evm">0xf42ec745df7789731c4a9DCB739E1Ee8C5E36988</code>
+          <button data-copy-target="evm">复制</button>
+        </div>
+      </div>
+      <div class="donate-card"><h3>🪙 Solana</h3>
+        <div class="address-row">
+          <code id="solana">2EZG4oMaCYB6y9WDPVPiZPzJ8DbriB9N3p3KonkmT2hw</code>
+          <button data-copy-target="solana">复制</button>
+        </div>
+      </div>
+      <div class="donate-card"><h3>🪙 TON</h3>
+        <div class="address-row">
+          <code id="ton">UQAzuLFESF_pM19npVOCGdZ9e5rcZokVNUgN80EPu4AE_khB</code>
+          <button data-copy-target="ton">复制</button>
+        </div>
+      </div>
+      <div class="donate-card"><h3>🪙 Sui</h3>
+        <div class="address-row">
+          <code id="sui">0x4a6d7310fb0eb1e7c6841122bd4622aa49d86547af820df6b0da8ffc52a3ccd5</code>
+          <button data-copy-target="sui">复制</button>
+        </div>
+      </div>
+      <div class="donate-card"><h3>🪙 Aptos</h3>
+        <div class="address-row">
+          <code id="aptos">0xade0f501bc7438cb03cfb58d88897b5eb8531837797c10d86125f922e2f492ce</code>
+          <button data-copy-target="aptos">复制</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Copyright © 2025 Mirrorify.net All rights reserved.</p>
+    </div>
+  </div>
+
+  <div id="copy-toast" class="copy-toast">✅ 已复制到剪贴板</div>
+
+  <script>
+    function showToast(message = "✅ 已复制到剪贴板") {
+      const toast = document.getElementById("copy-toast");
+      toast.innerText = message;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2000);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll("pre").forEach((block) => {
+        const wrapper = block.parentElement;
+        const button = document.createElement("button");
+        button.innerText = "复制";
+        button.className = "copy-btn";
+        button.addEventListener("click", () => {
+          navigator.clipboard.writeText(block.innerText).then(() => {
+            button.innerText = "✅ 已复制";
+            showToast();
+            setTimeout(() => button.innerText = "复制", 1500);
+          });
+        });
+        wrapper.appendChild(button);
+      });
+
+      document.querySelectorAll("[data-copy-target]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const targetId = btn.getAttribute("data-copy-target");
+          const content = document.getElementById(targetId)?.innerText || "";
+          navigator.clipboard.writeText(content).then(() => {
+            btn.innerText = "✅ 已复制";
+            showToast();
+            setTimeout(() => btn.innerText = "复制", 1500);
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

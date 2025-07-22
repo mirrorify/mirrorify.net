@@ -18,20 +18,24 @@
 
     body {
       display: flex;
-      justify-content: center;
+      justify-content: center; /* Centers horizontally */
       align-items: flex-start;
       min-height: 100vh;
       padding: 30px 15px;
+      flex-direction: column;
+      margin: 0; /* Ensures no margin at the body level */
     }
-
+    
     .container {
       background: #fff;
       max-width: 900px;
-      width: 100%;
+      width: 100%; /* Full width up to the max-width */
       border-radius: 12px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       padding: 30px;
+      margin: 0 auto; /* Ensure container is centered */
     }
+
 
     h1, h2, h3 {
       color: #005fa3;
@@ -225,6 +229,17 @@
       opacity: 1;
     }
 
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+      margin-top: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     @media (max-width: 600px) {
       table {
         display: block;
@@ -370,6 +385,9 @@ spec:
       <p>Copyright © 2025 Mirrorify.net All rights reserved.</p>
     </div>
   </div>
+
+  <!-- 状态监控嵌入 -->
+  <iframe src="https://status.mirrorify.net" style="width: 100%; height: 500px; border: none;"></iframe>
 
   <div id="copy-toast" class="copy-toast">✅ 已复制到剪贴板</div>
 
